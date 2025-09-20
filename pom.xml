@@ -1,74 +1,127 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <!-- Project coordinates -->
-  <groupId>com.adarsha</groupId>
-  <artifactId>myapp</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  
-  <name>myapp</name>
-  <description>Spring Boot Web Application</description>
+    <!-- Basic project coordinates and model version -->
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.adarsha</groupId>
+    <artifactId>myapp</artifactId>
+    <version>1.0.0</version>
+    <packaging>war</packaging>
 
-  <!-- Parent POM for Spring Boot -->
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.6.4</version> <!-- Change to the version you want -->
-  </parent>
+    <name>My Spring Boot Web Application</name>
+    <description>Spring Boot WAR with Thymeleaf for Tomcat Deployment</description>
+    <url>http://example.com/myapp</url>
 
-  <properties>
-    <java.version>11</java.version> <!-- Adjust based on your Java version -->
-  </properties>
+    <!-- Properties to define versions and Java compatibility -->
+    <properties>
+        <java.version>17</java.version>
+        <spring.boot.version>2.7.13</spring.boot.version>
+        <thymeleaf.version>3.0.15.RELEASE</thymeleaf.version>
+    </properties>
 
-  <!-- Dependencies -->
-  <dependencies>
-    <!-- Spring Boot Starter Web for RESTful Web Application -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
+    <!-- Import Spring Boot dependencies BOM for dependency version management -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-    <!-- Spring Boot Starter for working with Spring Boot in general -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
-    </dependency>
+    <!-- Define project dependencies -->
+    <dependencies>
+        <!-- Spring Boot starter for web apps -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- Spring Boot starter for Thymeleaf templating -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
 
-    <!-- Spring Boot Starter for testing -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
+        <!-- Optional: Thymeleaf extras for Java 8 Time API -->
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-java8time</artifactId>
+            <version>3.0.4.RELEASE</version>
+        </dependency>
 
-    <!-- Spring Boot Starter Data JPA if you plan to use databases -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
+        <!-- Servlet API provided by Tomcat -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
 
-    <!-- H2 Database (for in-memory DB) -->
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-  </dependencies>
+        <!-- Optional: Test dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+            </exclusions>
+        </dependency>
+    </dependencies>
 
-  <!-- Build Configuration -->
-  <build>
-    <plugins>
-      <!-- Spring Boot Maven Plugin to build and run Spring Boot apps -->
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
+    <!-- Build configuration -->
+    <build>
+        <!-- Final WAR name -->
+        <finalName>myapp</finalName>
+
+        <plugins>
+            <!-- Compiler plugin for Java version -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+
+            <!-- Spring Boot Maven plugin for packaging WAR -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <configuration>
+                    <mainClass>com.adarsha.website.Application</mainClass>
+                    <packaging>war</packaging>
+                </configuration>
+            </plugin>
+
+            <!-- Maven WAR plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- Repositories (optional if you use central) -->
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+    </repositories>
 
 </project>
 
