@@ -1,61 +1,55 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <!-- Basic project coordinates and model version -->
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.adarsha</groupId>
     <artifactId>myapp</artifactId>
     <version>1.0.0</version>
     <packaging>war</packaging>
 
-    <name>My Spring Boot Web Application</name>
-    <description>Spring Boot WAR with Thymeleaf for Tomcat Deployment</description>
-    <url>http://example.com/myapp</url>
-
-    <!-- Properties to define versions and Java compatibility -->
     <properties>
         <java.version>17</java.version>
         <spring.boot.version>2.7.13</spring.boot.version>
-        <thymeleaf.version>3.0.15.RELEASE</thymeleaf.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
 
-    <!-- Import Spring Boot dependencies BOM for dependency version management -->
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring.boot.version}</version>
+                <type>pom</type>
                 <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
-    <!-- Define project dependencies -->
     <dependencies>
-        <!-- Spring Boot starter for web apps -->
+        <!-- Spring Web MVC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Spring Boot starter for Thymeleaf templating -->
+        <!-- Thymeleaf Template Engine -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
-        <!-- Optional: Thymeleaf extras for Java 8 Time API -->
+        <!-- Thymeleaf Extras for Java 8 Time -->
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-java8time</artifactId>
             <version>3.0.4.RELEASE</version>
         </dependency>
 
-        <!-- Servlet API provided by Tomcat -->
+        <!-- Servlet API, provided by the container -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -63,12 +57,13 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Optional: Test dependencies -->
+        <!-- Spring Boot Starter Test with JUnit 5 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
             <exclusions>
+                <!-- Exclude JUnit 4 Vintage engine for clean JUnit 5 testing -->
                 <exclusion>
                     <groupId>org.junit.vintage</groupId>
                     <artifactId>junit-vintage-engine</artifactId>
@@ -77,37 +72,33 @@
         </dependency>
     </dependencies>
 
-    <!-- Build configuration -->
     <build>
-        <!-- Final WAR name -->
         <finalName>myapp</finalName>
 
         <plugins>
-            <!-- Compiler plugin for Java version -->
+            <!-- Compiler plugin to set Java version -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
 
-            <!-- Spring Boot Maven plugin for packaging WAR -->
+            <!-- Spring Boot Maven Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.boot.version}</version>
                 <configuration>
-                    <mainClass>com.adarsha.website.Application</mainClass>
-                    <packaging>war</packaging>
+                    <!-- Since this is WAR packaging, skip repackaging -->
+                    <skip>true</skip>
                 </configuration>
             </plugin>
-            <!-- Maven WAR plugin -->
+
+            <!-- WAR packaging plugin -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.2</version>
                 <configuration>
@@ -116,14 +107,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <!-- Repositories (optional if you use central) -->
-    <repositories>
-        <repository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2</url>
-        </repository>
-    </repositories>
 
 </project>
 
