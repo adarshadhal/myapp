@@ -19,6 +19,7 @@
         <java.version>17</java.version>
         <spring.boot.version>2.7.13</spring.boot.version>
         <thymeleaf.version>3.0.15.RELEASE</thymeleaf.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <!-- Import Spring Boot dependencies BOM for dependency version management -->
@@ -28,7 +29,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring.boot.version}</version>
-                <type>pom</type>
                 <scope>import</scope>
             </dependency>
         </dependencies>
@@ -41,6 +41,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <!-- Spring Boot starter for Thymeleaf templating -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -71,6 +72,7 @@
                 <exclusion>
                     <groupId>org.junit.vintage</groupId>
                     <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
     </dependencies>
@@ -86,6 +88,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
+                <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
@@ -102,7 +105,6 @@
                     <packaging>war</packaging>
                 </configuration>
             </plugin>
-
             <!-- Maven WAR plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
