@@ -1,4 +1,4 @@
-- hosts: "{{web}}"
+- hosts: web
   become: yes
   #vars_files:
     #- group_vars/pwd.yml
@@ -9,10 +9,10 @@
             echo "deleteing previous application deployment"
             kubectl delete deployment `kubectl get deployment | grep -v NAME | awk '{print $1}' | grep myapp`
             echo "creating new application deployment"
-            kubectl create deployment myapp --image=adarshadhal/myapp:{{$BUILD_NUMBER}}
+            kubectl create deployment myapp --image=adarshadhal/myapp:$BUILD_NUMBER
          else 
             echo "Deploying Sampleapp Application"
-            kubectl create deployment myapp --image=adarshadhal/myapp:{{$BUILD_NUMBER}}
+            kubectl create deployment myapp --image=adarshadhal/myapp:$BUILD_NUMBER
          fi
     - name: deploying service
       shell: |
