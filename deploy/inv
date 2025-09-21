@@ -1,2 +1,2 @@
 [web]
-98.130.128.248
+98.130.128.248 ansible_user=adarsha ansible_ssh_pass=Adarsha2580 ansible_become_pass=Adarsha2580
